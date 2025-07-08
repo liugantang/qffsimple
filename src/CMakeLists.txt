@@ -75,6 +75,7 @@ add_definitions(
   )
 
 add_executable(qwinff ${qwinff_source_files} ${qwinff_ui_files} ${qwinff_rc_files})
+target_compile_definitions(qwinff PUBLIC TOOLS_IN_DATA_PATH)
 target_link_libraries(qwinff qmpwidget Qt5::Widgets Qt5::Network)
 target_include_directories(qwinff PRIVATE .)
 
