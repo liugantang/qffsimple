@@ -79,7 +79,7 @@ void FFplayPreviewer::setWindowSize(int w, int h)
     m_w = w; m_h = h;
 }
 
-void FFplayPreviewer::setWindowTitle(QString str)
+void FFplayPreviewer::setWindowTitle(const QString &str)
 {
     m_title = str;
 }

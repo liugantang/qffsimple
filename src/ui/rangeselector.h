@@ -24,7 +24,7 @@ class RangeSelector : public QWidget
 {
     Q_OBJECT
 public:
-    explicit RangeSelector(QWidget *parent = 0);
+    explicit RangeSelector(QWidget *parent = nullptr);
     ~RangeSelector();
 
     int beginValue() const;

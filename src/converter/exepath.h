@@ -24,14 +24,14 @@
 class ExePath
 {
 public:
-    static void setPath(QString program, QString path);
-    static QString getPath(QString program);
+    static void setPath(const QString &program, const QString &path);
+    static QString getPath(const QString &program);
 
     /**
      * @brief Check whether the program can be executed.
      * @param program the program to test
      */
-    static bool checkProgramAvailability(QString program);
+    static bool checkProgramAvailability(const QString &program);
 
     /**
      * Save the paths using QSettings

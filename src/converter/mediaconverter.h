@@ -30,7 +30,7 @@ class MediaConverter : public QObject
 {
     Q_OBJECT
 public:
-    explicit MediaConverter(QObject *parent = 0);
+    explicit MediaConverter(QObject *parent = nullptr);
     ~MediaConverter();
 
     /*!

@@ -29,7 +29,7 @@ class UpdateChecker : public QObject
 {
     Q_OBJECT
 public:
-    explicit UpdateChecker(QObject *parent = 0);
+    explicit UpdateChecker(QObject *parent = nullptr);
     ~UpdateChecker();
 
     enum CheckResult {
@@ -56,7 +56,7 @@ public slots:
     void checkUpdate();
 
 private slots:
-    void downloadFinished(bool, QString, QString);
+    void downloadFinished(bool, QString, const QString &);
     
 private:
     Q_DISABLE_COPY(UpdateChecker)

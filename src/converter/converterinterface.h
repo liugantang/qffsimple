@@ -32,7 +32,7 @@ class ConverterInterface : public QObject
 {
     Q_OBJECT
 public:
-    explicit ConverterInterface(QObject *parent = 0);
+    explicit ConverterInterface(QObject *parent = nullptr);
     virtual QString executableName() const = 0;
     virtual void reset() = 0;
     virtual QProcess::ProcessChannel processReadChannel() const = 0;

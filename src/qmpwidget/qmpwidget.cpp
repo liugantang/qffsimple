@@ -292,7 +292,7 @@ class QMPProcess : public QProcess
 
 			if (m_mode == QMPwidget::EmbeddedMode) {
 				myargs += "-wid";
-				myargs += QString::number((int)widget->winId());
+				myargs += QString::number(static_cast<int>(widget->winId()));
 				if (!m_videoOutput.isEmpty()) {
 					myargs += "-vo";
 					myargs += m_videoOutput;
@@ -479,7 +479,7 @@ class QMPProcess : public QProcess
 			} else if (info[0] == "ID_LENGTH") {
 				m_mediaInfo.length = info[1].toDouble();
 			} else if (info[0] == "ID_SEEKABLE") {
-				m_mediaInfo.seekable = (bool)info[1].toInt();
+				m_mediaInfo.seekable = static_cast<bool>(info[1].toInt());
 
 			} else if (info[0].startsWith("ID_CLIP_INFO_NAME")) {
 				m_currentTag = info[1];
@@ -970,7 +970,7 @@ void QMPwidget::stop()
  */
 bool QMPwidget::seek(int offset, int whence)
 {
-	return seek(double(offset), whence);
+	return seek(static_cast<double>(offset), whence);
 }
 
 /*!
@@ -1154,8 +1154,8 @@ void QMPwidget::updateWidgetSize()
 		QSize mediaSize = m_process->m_mediaInfo.size;
 		QSize widgetSize = size();
 
-		double factor = qMin(double(widgetSize.width()) / mediaSize.width(), double(widgetSize.height()) / mediaSize.height());
-		QRect wrect(0, 0, int(factor * mediaSize.width() + 0.5), int(factor * mediaSize.height()));
+		double factor = qMin(static_cast<double>(widgetSize.width()) / mediaSize.width(), static_cast<double>(widgetSize.height()) / mediaSize.height());
+		QRect wrect(0, 0, static_cast<int>(factor * mediaSize.width() + 0.5), static_cast<int>(factor * mediaSize.height()));
 		wrect.moveTopLeft(rect().center() - wrect.center());
 		m_widget->setGeometry(wrect);
 	} else {

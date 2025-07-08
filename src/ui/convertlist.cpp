@@ -60,7 +60,7 @@ QString htmlEscape(QString s) {
 class Task : public QObject
 {
 public:
-    explicit Task(QObject *parent = 0) : QObject(parent) { }
+    explicit Task(QObject *parent = nullptr) : QObject(parent) { }
     virtual ~Task() { }
     enum TaskStatus { QUEUED, RUNNING, FINISHED, FAILED };
     int id;
@@ -118,24 +118,24 @@ public:
     {
         switch (event->type()) {
         case QEvent::KeyPress:
-            return m_parent->list_keyPressEvent(static_cast<QKeyEvent*>(event));
+            return m_parent->list_keyPressEvent(dynamic_cast<QKeyEvent*>(event));
         case QEvent::DragEnter:
-            m_parent->list_dragEnterEvent(static_cast<QDragEnterEvent*>(event));
+            m_parent->list_dragEnterEvent(dynamic_cast<QDragEnterEvent*>(event));
             return true;
         case QEvent::DragMove:
-            m_parent->list_dragMoveEvent(static_cast<QDragMoveEvent*>(event));
+            m_parent->list_dragMoveEvent(dynamic_cast<QDragMoveEvent*>(event));
             return true;
         case QEvent::DragLeave:
-            m_parent->list_dragLeaveEvent(static_cast<QDragLeaveEvent*>(event));
+            m_parent->list_dragLeaveEvent(dynamic_cast<QDragLeaveEvent*>(event));
             return true;
         case QEvent::Drop:
-            m_parent->list_dropEvent(static_cast<QDropEvent*>(event));
+            m_parent->list_dropEvent(dynamic_cast<QDropEvent*>(event));
             return true;
         case QEvent::ChildRemoved:
-            m_parent->list_childRemovedEvent(static_cast<QChildEvent*>(event));
+            m_parent->list_childRemovedEvent(dynamic_cast<QChildEvent*>(event));
             return true;
         case QEvent::MouseButtonPress:
-            m_parent->list_mousePressEvent(static_cast<QMouseEvent*>(event));
+            m_parent->list_mousePressEvent(dynamic_cast<QMouseEvent*>(event));
             return false; // don't eat mouse events
         default:
             break;
@@ -154,7 +154,7 @@ ConvertList::ConvertList(Presets *presets, QWidget *parent) :
     prev_index(0),
     m_converter(new MediaConverter(this)),
     m_probe(new MediaProbe(this)),
-    m_current_task(0),
+    m_current_task(nullptr),
     is_busy(false),
     run_next(false),
     m_presets(presets)
@@ -261,7 +261,7 @@ bool ConvertList::addTask(ConversionParameters param)
     task->id = ++prev_index;
     task->listitem = item;
 
-    QVariant task_var = qVariantFromValue((void*)task);
+    QVariant task_var = qVariantFromValue(static_cast<void *>(task));
     item->setData(0, Qt::UserRole, task_var);
 
     // Prevent dropping directly on an item
@@ -377,7 +377,7 @@ int ConvertList::elapsedTime() const
 const ConversionParameters* ConvertList::getCurrentIndexParameter() const
 {
     Task *task = first_selected_task();
-    return task ? &task->param : 0;
+    return task ? &task->param : nullptr;
 }
 
 bool ConvertList::selectedTaskFailed() const
@@ -418,7 +418,7 @@ void ConvertList::stop()
         progress_refreshed(0);
         m_current_task->status = Task::QUEUED;
         progressBar(m_current_task)->setActive(false);
-        m_current_task = 0;
+        m_current_task = nullptr;
         emit stopped();
     }
     m_converter->stop();
@@ -442,7 +442,7 @@ void ConvertList::editSelectedParameters()
         return;
 
     Task *first_sel_task = get_task(itemList[0]);
-    Q_ASSERT(first_sel_task != 0);
+    Q_ASSERT(first_sel_task != nullptr);
     ConversionParameters param = first_sel_task->param;
     bool singleItem = (itemList.size() == 1);
 
@@ -588,7 +588,7 @@ void ConvertList::task_finished_slot(int exitcode)
 
         refresh_progressbar(m_current_task);
 
-        m_current_task = 0;
+        m_current_task = nullptr;
         emit task_finished(exitcode);
 
         run_next = true;
@@ -701,7 +701,7 @@ void ConvertList::slotRestoreListHeaders()
     init_treewidget_columns_visibility(m_list);
 }
 
-void ConvertList::slotDoubleClick(QModelIndex index)
+void ConvertList::slotDoubleClick(const QModelIndex &index)
 {
     int row = index.row();
     if (row >= 0 && row < count()) {
@@ -1020,7 +1020,7 @@ void ConvertList::remove_items(const QList<QTreeWidgetItem *>& itemList)
  */
 ProgressBar* ConvertList::progressBar(Task *task)
 {
-    ProgressBar *prog = (ProgressBar*) m_list->itemWidget(task->listitem, COL_PROGRESS);
+    ProgressBar *prog = static_cast<ProgressBar *>(m_list->itemWidget(task->listitem, COL_PROGRESS));
     if (!prog) {
         prog = new ProgressBar();
         m_list->setItemWidget(task->listitem, COL_PROGRESS, prog);
@@ -1100,7 +1100,7 @@ bool ConvertList::change_output_file(Task *task, const QString &new_file
 void ConvertList::remove_item(QTreeWidgetItem *item)
 {
     Task *task = get_task(item);
-    Q_ASSERT(task != 0);
+    Q_ASSERT(task != nullptr);
     if (task->status != Task::RUNNING) { // not a running task
         output_filenames_pop(task->param.destination);
         const int item_index = m_list->indexOfTopLevelItem(item);
@@ -1132,7 +1132,7 @@ Task* ConvertList::first_selected_task() const
 {
     QList<QTreeWidgetItem*> itemList = m_list->selectedItems();
     if (itemList.isEmpty())
-        return 0;
+        return nullptr;
     else
         return get_task(itemList[0]);
 }
@@ -1143,7 +1143,7 @@ Task* ConvertList::first_selected_task() const
  */
 Task* ConvertList::get_task(QTreeWidgetItem *item) const
 {
-    return (Task*)item->data(0, Qt::UserRole).value<void*>();
+    return static_cast<Task *>(item->data(0, Qt::UserRole).value<void *>());
 }
 
 void ConvertList::refresh_progressbar(Task *task)

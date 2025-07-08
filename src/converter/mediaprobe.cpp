@@ -34,40 +34,40 @@ namespace {
 namespace patterns {
 
 // META
-const char meta[]
+constexpr char meta[]
     = "Duration: ([0-9]+):([0-9]+):([0-9]+\\.[0-9]*)(, start: ([0-9]+\\.[0-9]*))?, bitrate: ([0-9]+) kb/s";
-const char META_HOUR_INDEX = 1;        // matched type: integer
-const char META_MINUTE_INDEX = 2;      // matched type: integer
-const char META_SECOND_INDEX = 3;      // matched type: double
-const char META_START_INDEX = 5;       // matched type: double
-const char META_BITRATE_INDEX = 6;     // matched type: integer
+constexpr char META_HOUR_INDEX = 1;        // matched type: integer
+constexpr char META_MINUTE_INDEX = 2;      // matched type: integer
+constexpr char META_SECOND_INDEX = 3;      // matched type: double
+constexpr char META_START_INDEX = 5;       // matched type: double
+constexpr char META_BITRATE_INDEX = 6;     // matched type: integer
 
 // AUDIO
-const char audio[]
+constexpr char audio[]
     = "Stream #([0-9]+).([0-9]+).*: Audio:\\s*([^,]*),\\s*([0-9]+)\\s*Hz,\\s*([^,]*),\\s*([^,]*),\\s*([0-9]+)\\s*kb/s";
-const int AUDIO_STREAM_INDEX = 2;      // matched type: integer
-const int AUDIO_CODEC_INDEX = 3;       // matched type: string
-const int AUDIO_SAMPLERATE_INDEX = 4;  // matched type: integer
-const int AUDIO_CHANNELS_INDEX = 5;    // matched type: string
-const int AUDIO_BITRATE_INDEX = 7;     // matched type: integer
+constexpr int AUDIO_STREAM_INDEX = 2;      // matched type: integer
+constexpr int AUDIO_CODEC_INDEX = 3;       // matched type: string
+constexpr int AUDIO_SAMPLERATE_INDEX = 4;  // matched type: integer
+constexpr int AUDIO_CHANNELS_INDEX = 5;    // matched type: string
+constexpr int AUDIO_BITRATE_INDEX = 7;     // matched type: integer
 
-const char audio_check[] = "^\\s*Stream .* Audio";
+constexpr char audio_check[] = "^\\s*Stream .* Audio";
 
 // VIDEO
-const char video[]
+constexpr char video[]
 = "Stream #([0-9]+).([0-9]+).*: Video:\\s*([^,]*),\\s*([^,]*),\\s*([0-9]+)x([0-9]+)[^,]*"
         ",\\s*([0-9]+)[^,]*,\\s*([0-9]+(\\.[0-9]*)?)";
-const int VIDEO_STREAM_INDEX = 2;      // matched type: integer
-const int VIDEO_CODEC_INDEX = 3;       // matched type: string
-const int VIDEO_WIDTH_INDEX = 5;       // matched type: integer
-const int VIDEO_HEIGHT_INDEX = 6;      // matched type: integer
-const int VIDEO_BITRATE_INDEX = 7;     // matched type: integer
-const int VIDEO_FRAMERATE_INDEX = 8;   // matched type: double
+constexpr int VIDEO_STREAM_INDEX = 2;      // matched type: integer
+constexpr int VIDEO_CODEC_INDEX = 3;       // matched type: string
+constexpr int VIDEO_WIDTH_INDEX = 5;       // matched type: integer
+constexpr int VIDEO_HEIGHT_INDEX = 6;      // matched type: integer
+constexpr int VIDEO_BITRATE_INDEX = 7;     // matched type: integer
+constexpr int VIDEO_FRAMERATE_INDEX = 8;   // matched type: double
 
-const char video_check[] = "^\\s*Stream .* Video";
+constexpr char video_check[] = "^\\s*Stream .* Video";
 
 // SUBTITLE
-const char subtitle[]
+constexpr char subtitle[]
     = "Stream [^(]*\\(([^:]*)\\): Subtitle:";
 
 } // namespace patterns
@@ -349,12 +349,12 @@ bool MediaProbe::error() const
 
 int MediaProbe::hours() const
 {
-    return int(p->metainfo.duration) / 3600;
+    return static_cast<int>(p->metainfo.duration) / 3600;
 }
 
 int MediaProbe::minutes() const
 {
-    return (int(p->metainfo.duration) % 3600) / 60;
+    return (static_cast<int>(p->metainfo.duration) % 3600) / 60;
 }
 
 double MediaProbe::seconds() const

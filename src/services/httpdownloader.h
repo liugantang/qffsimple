@@ -27,7 +27,7 @@ class HttpDownloader : public QObject
 {
     Q_OBJECT
 public:
-    explicit HttpDownloader(QObject *parent = 0);
+    explicit HttpDownloader(QObject *parent = nullptr);
 
     virtual ~HttpDownloader();
 
@@ -44,7 +44,7 @@ public:
     unsigned int sizeLimit() const;
 
 public slots:
-    void startDownload(QString url);
+    void startDownload(const QString &url);
     void cancelAllDownloads();
 
 signals:

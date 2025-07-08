@@ -25,7 +25,7 @@ class MPlayerPreviewer : public AbstractPreviewer
 {
     Q_OBJECT
 public:
-    explicit MPlayerPreviewer(QObject *parent = 0);
+    explicit MPlayerPreviewer(QObject *parent = nullptr);
 
     bool available() const;
 

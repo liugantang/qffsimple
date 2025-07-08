@@ -39,7 +39,7 @@ class AddTaskWizard : public QWizard
     Q_OBJECT
 
 public:
-    explicit AddTaskWizard(Presets *presets, QWidget *parent = 0);
+    explicit AddTaskWizard(Presets *presets, QWidget *parent = nullptr);
 
     ~AddTaskWizard();
 

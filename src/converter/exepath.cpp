@@ -32,12 +32,12 @@ typedef QMap<QString, QString> Map;
 Map program_path;
 }
 
-void ExePath::setPath(QString program, QString path)
+void ExePath::setPath(const QString &program, const QString &path)
 {
     program_path.insert(program, path);
 }
 
-QString ExePath::getPath(QString program)
+QString ExePath::getPath(const QString &program)
 {
     if (program_path.contains(program))
         return program_path[program];
@@ -48,7 +48,7 @@ QString ExePath::getPath(QString program)
     return "";
 }
 
-bool ExePath::checkProgramAvailability(QString program)
+bool ExePath::checkProgramAvailability(const QString &program)
 {
     if (!program_path.contains(program)) // the program is not set
         return false;

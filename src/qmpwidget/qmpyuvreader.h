@@ -37,7 +37,7 @@ class QMPYuvReader : public QThread
 
 	public:
 		// Constructor
-		QMPYuvReader(QObject *parent = 0)
+		QMPYuvReader(QObject *parent = nullptr)
 			: QThread(parent), m_stop(false), m_saveme(NULL), m_savemeSize(-1)
 		{
 			QString tdir = QDir::tempPath();
@@ -234,14 +234,14 @@ ioerror:
 		{
 			/* clip Y values under 16 */
 			for (int i = 0; i < 16; i++) {
-				RGB_Y[i] = zround((1.0 * (double)(16 - 16) * 255.0 / 219.0 * (double)(1<<18)) + (double)(1<<(18-1)));
+				RGB_Y[i] = zround((1.0 * static_cast<double>(16 - 16) * 255.0 / 219.0 * (double)(1<<18)) + (double)(1<<(18-1)));
 			}
 			for (int i = 16; i < 236; i++) {
-				RGB_Y[i] = zround((1.0 * (double)(i - 16) * 255.0 / 219.0 * (double)(1<<18)) + (double)(1<<(18-1)));
+				RGB_Y[i] = zround((1.0 * static_cast<double>(i - 16) * 255.0 / 219.0 * (double)(1<<18)) + (double)(1<<(18-1)));
 			}
 			/* clip Y values above 235 */
 			for (int i = 236; i < 256; i++) {
-				RGB_Y[i] = zround((1.0 * (double)(235 - 16)  * 255.0 / 219.0 * (double)(1<<18)) + (double)(1<<(18-1)));
+				RGB_Y[i] = zround((1.0 * static_cast<double>(235 - 16)  * 255.0 / 219.0 * (double)(1<<18)) + (double)(1<<(18-1)));
 			}
 
 			/* clip Cb/Cr values below 16 */   
@@ -252,7 +252,7 @@ ioerror:
 				B_Cb[i] = zround(1.772 * (double)(-112) * 255.0 / 224.0 * (double)(1<<18));
 			}
 			for (int i = 16; i < 241; i++) {
-				R_Cr[i] = zround(1.402 * (double)(i - 128) * 255.0 / 224.0 * (double)(1<<18));
+				R_Cr[i] = zround(1.402 * static_cast<double>(i - 128) * 255.0 / 224.0 * (double)(1<<18));
 				G_Cr[i] = zround(-0.714136 * (double)(i - 128) * 255.0 / 224.0 * (double)(1<<18));
 				G_Cb[i] = zround(-0.344136 * (double)(i - 128) * 255.0 / 224.0 * (double)(1<<18));
 				B_Cb[i] = zround(1.772 * (double)(i - 128) * 255.0 / 224.0 * (double)(1<<18));

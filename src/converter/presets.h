@@ -44,7 +44,7 @@ class Presets : public QObject
 {
     Q_OBJECT
 public:
-    explicit Presets(QObject *parent = 0);
+    explicit Presets(QObject *parent = nullptr);
     virtual ~Presets();
 
     bool readFromFile(const QString& filename, bool removeUnavailableCodecs=true);

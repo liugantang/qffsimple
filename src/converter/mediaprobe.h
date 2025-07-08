@@ -24,7 +24,7 @@ class MediaProbe : public QObject
 {
     Q_OBJECT
 public:
-    explicit MediaProbe(QObject *parent = 0);
+    explicit MediaProbe(QObject *parent = nullptr);
     virtual ~MediaProbe();
 
     /*! Determine whether the probing program (ffprobe) is available. */

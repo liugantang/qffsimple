@@ -29,7 +29,7 @@ class AboutFFmpegDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit AboutFFmpegDialog(QWidget *parent = 0);
+    explicit AboutFFmpegDialog(QWidget *parent = nullptr);
     ~AboutFFmpegDialog();
 
 private:

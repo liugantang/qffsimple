@@ -34,7 +34,7 @@ class InteractiveCuttingDialog : public QDialog
     Q_OBJECT
     
 public:
-    explicit InteractiveCuttingDialog(QWidget *parent = 0);
+    explicit InteractiveCuttingDialog(QWidget *parent = nullptr);
     ~InteractiveCuttingDialog();
 
     static bool available();

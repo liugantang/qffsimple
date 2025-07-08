@@ -46,7 +46,7 @@ bool adjustPrivilegeForShutdown()
     tkp.Privileges[0] = luidAttr;
 
     if (!AdjustTokenPrivileges(hToken, false, &tkp
-                               , sizeof(TOKEN_PRIVILEGES), 0, 0))
+                               , sizeof(TOKEN_PRIVILEGES), nullptr, nullptr))
         return false;
 
     return true;

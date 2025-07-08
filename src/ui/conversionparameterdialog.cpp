@@ -41,7 +41,7 @@ ConversionParameterDialog::ConversionParameterDialog(QWidget *parent) :
     ui(new Ui::ConversionParameterDialog),
     m_timeEdit(new TimeRangeEdit(this)),
     m_rangeSel(new RangeSelector(this)),
-    m_previewer(0)
+    m_previewer(nullptr)
 {
     ui->setupUi(this);
 
@@ -172,7 +172,7 @@ void ConversionParameterDialog::read_fields(const ConversionParameters& param)
         MediaProbe probe;
         if (probe.run(param.source)) { // probe the source file, blocking call
             // success, set the duration and show the range slider
-            int duration = (int)probe.mediaDuration();
+            int duration = static_cast<int>(probe.mediaDuration());
             m_timeEdit->setMaxTime(duration);
             m_rangeSel->setMaxValue(duration);
             m_rangeSel->setVisible(true);

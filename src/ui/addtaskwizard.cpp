@@ -136,14 +136,16 @@ bool AddTaskWizard::validateCurrentPage()
     switch (currentId()) {
     case 0: // Select input files
         // check if the list is empty
+    {
+        // check if the list is empty
         if (ui->lstFiles->count() != 0) { // complete
             return true;
-        } else {
-            QMessageBox::information(this, this->windowTitle()
-                                     , tr("Please select at least one file."));
-            return false;
         }
-        break;
+        QMessageBox::information(this, this->windowTitle()
+                                 , tr("Please select at least one file."));
+        return false;
+    }
+    break;
     case 1: // Select conversion parameters
         if (get_output_path_type() == SelectFolder) {
             if (!create_directory(ui->cbOutputPath->currentText()))

@@ -27,7 +27,7 @@ class AudioFilter : public QObject
 {
     Q_OBJECT
 public:
-    explicit AudioFilter(QObject *parent = 0);
+    explicit AudioFilter(QObject *parent = nullptr);
 
     /**
      * Start the audio-filtering process pipeline.

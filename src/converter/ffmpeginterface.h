@@ -27,7 +27,7 @@ class FFmpegInterface : public ConverterInterface
 {
     Q_OBJECT
 public:
-    explicit FFmpegInterface(QObject *parent = 0);
+    explicit FFmpegInterface(QObject *parent = nullptr);
     virtual ~FFmpegInterface();
     QString executableName() const;
     void reset();

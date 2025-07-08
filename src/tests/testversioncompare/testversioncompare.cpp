@@ -32,8 +32,8 @@ void TestVersionCompare::testVersionEquality()
 
 void TestVersionCompare::testVersionInequality()
 {
-	const int COUNT = 10;
-	Version *v[COUNT*COUNT*COUNT] = {0};
+	constexpr int COUNT = 10;
+	Version *v[COUNT*COUNT*COUNT] = {nullptr};
 	for (int i=0; i<COUNT; i++)
 		for (int k=0; k<COUNT; k++)
 			for (int u=0; u<COUNT; u++) {

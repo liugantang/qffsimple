@@ -28,7 +28,7 @@
 #define PROJECT_HOMEPAGE "http://qwinff.github.io"
 
 namespace {
-QString url(QString lnk)
+QString url(const QString &lnk)
 {
     return QString("<a href=\"%1\">%1</a>").arg(lnk);
 }
@@ -153,7 +153,7 @@ QString AboutDialog::getTranslators()
         {"pl_PL", trad(tr("Polish")
                     , "Toratora")},
     };
-    const int size = sizeof(table) / sizeof(table[0]);
+    constexpr int size = std::size(table);
 
     QStringList translators;
     QString current_locale = QLocale::system().name();

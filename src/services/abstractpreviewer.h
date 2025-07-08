@@ -24,7 +24,7 @@ class AbstractPreviewer : public QObject
 {
     Q_OBJECT
 public:
-    explicit AbstractPreviewer(QObject *parent = 0);
+    explicit AbstractPreviewer(QObject *parent = nullptr);
     virtual ~AbstractPreviewer();
 
     /** @brief Determine whether this previewer can play files.

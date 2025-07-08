@@ -31,7 +31,7 @@ class PoweroffDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit PoweroffDialog(QWidget *parent = 0);
+    explicit PoweroffDialog(QWidget *parent = nullptr);
     ~PoweroffDialog();
 
 public slots:

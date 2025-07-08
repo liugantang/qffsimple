@@ -26,7 +26,7 @@ class FFplayPreviewer : public AbstractPreviewer
 {
     Q_OBJECT
 public:
-    explicit FFplayPreviewer(QObject *parent = 0);
+    explicit FFplayPreviewer(QObject *parent = nullptr);
     virtual ~FFplayPreviewer();
 
     bool available() const;
@@ -52,7 +52,7 @@ public:
      *  This option takes effect after invoking start() again.
      *  If str is empty, default title is displayed (filename).
      */
-    void setWindowTitle(QString str);
+    void setWindowTitle(const QString &str);
 
     static bool FFplayAvailable();
 

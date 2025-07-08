@@ -31,7 +31,7 @@ class MediaPlayerWidget : public QWidget
     Q_OBJECT
     
 public:
-    explicit MediaPlayerWidget(QWidget *parent = 0);
+    explicit MediaPlayerWidget(QWidget *parent = nullptr);
     ~MediaPlayerWidget();
 
     bool ok() const;

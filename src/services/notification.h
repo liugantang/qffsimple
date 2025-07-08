@@ -55,9 +55,9 @@ public:
      */
     static bool setType(NotificationType type);
 
-    static void send(QWidget *parent, QString title, QString message);
+    static void send(QWidget *parent, const QString &title, const QString &message);
 
-    static void send(QWidget *parent, QString title, QString message, int level);
+    static void send(QWidget *parent, const QString &title, const QString &message, int level);
 private:
     static NotificationType m_type;
 };

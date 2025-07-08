@@ -23,7 +23,7 @@
 
 UpdateDialog::UpdateDialog(QWidget *parent) :
     QDialog(parent),
-    m_updateChecker(0),
+    m_updateChecker(nullptr),
     ui(new Ui::UpdateDialog)
 {
     ui->setupUi(this);

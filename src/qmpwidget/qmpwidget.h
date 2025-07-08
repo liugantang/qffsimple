@@ -88,7 +88,7 @@ class QMPwidget : public QWidget
 		};
 
 	public:
-		QMPwidget(QWidget *parent = 0);
+		QMPwidget(QWidget *parent = nullptr);
 		virtual ~QMPwidget();
 
 		State state() const;

@@ -40,7 +40,7 @@ class ConvertList : public QWidget
     Q_OBJECT
 public:
 
-    explicit ConvertList(Presets *presets, QWidget *parent = 0);
+    explicit ConvertList(Presets *presets, QWidget *parent = nullptr);
     ~ConvertList();
 
     /*! Append a task to the list
@@ -154,7 +154,7 @@ private slots:
     void slotHeaderContextMenu(QPoint);
     void slotHeaderContextMenuTriggered(QAction*);
     void slotRestoreListHeaders();
-    void slotDoubleClick(QModelIndex);
+    void slotDoubleClick(const QModelIndex &);
     void slotAllItemsRemoved();
 
 protected:

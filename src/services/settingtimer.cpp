@@ -63,6 +63,6 @@ qint64 SettingTimer::elapsedMilliseconds() const
 
 qint64 SettingTimer::elapsedSeconds() const
 {
-    const int milliseconds_per_second = 1000;
+    constexpr int milliseconds_per_second = 1000;
     return elapsedMilliseconds() / milliseconds_per_second;
 }

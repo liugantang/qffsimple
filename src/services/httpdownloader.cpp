@@ -44,7 +44,7 @@ unsigned int HttpDownloader::sizeLimit() const
     return m_sizeLimit;
 }
 
-void HttpDownloader::startDownload(QString url)
+void HttpDownloader::startDownload(const QString &url)
 {
     QNetworkReply *reply = m_webCtrl.get(QNetworkRequest(url));
     m_downloads[reply] = url;

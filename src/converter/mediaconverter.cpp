@@ -161,7 +161,7 @@ void MediaConverter::convertProgressFinished(int exitcode, QProcess::ExitStatus)
 
 void MediaConverter::convertProgressRefreshed(double percentage)
 {
-    emit progressRefreshed((int)percentage);
+    emit progressRefreshed(static_cast<int>(percentage));
 }
 
 // private methods

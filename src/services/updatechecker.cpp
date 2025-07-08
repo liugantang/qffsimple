@@ -94,7 +94,7 @@ void UpdateChecker::checkUpdate()
     p->downloader.startDownload(update_url);
 }
 
-void UpdateChecker::downloadFinished(bool success, QString /*url*/, QString content)
+void UpdateChecker::downloadFinished(bool success, QString /*url*/, const QString &content)
 {
     if (success) {
         XmlUpdateInfoParser parser;

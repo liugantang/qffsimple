@@ -33,13 +33,13 @@
 
 namespace {
 namespace patterns {
-    const char progress[]
+    constexpr char progress[]
         = "size=\\s*([0-9]+)kB\\s+time=\\s*([0-9]+\\.[0-9]+)\\s+bitrate=\\s*([0-9]+\\.[0-9]+)kbits/s";
     enum Progress_1_Fields {
         PROG_1_TIME = 2
     };
 
-    const char progress2[] // another possible format where time is represented as hh:mm:ss
+    constexpr char progress2[] // another possible format where time is represented as hh:mm:ss
         = "size=\\s*([0-9]+)kB\\s+time=\\s*([0-9][0-9]):([0-9][0-9]):([0-9][0-9](\\.[0-9][0-9]?)?)\\s+"
           "bitrate=\\s*([0-9]+\\.[0-9]+)kbits/s";
     enum Progress_2_Fields {
@@ -48,7 +48,7 @@ namespace patterns {
         PROG_2_SEC
     };
 
-    const char duration[]
+    constexpr char duration[]
         = "Duration:\\s+([0-9][0-9]):([0-9][0-9]):([0-9][0-9](\\.[0-9][0-9]?)?)";
 } // namespace patterns
 
@@ -125,9 +125,9 @@ namespace inner {
         // Find all available encoders
         QRegExp pattern("[ D]E([ VAS])...\\s+([^ ]+)\\s*(.*)$");
         QStringList encoder_list; // temporary storage of encoder names
-        const int AV_INDEX = 1;
-        const int CODEC_NAME_INDEX = 2;
-        const int CODEC_DESC = 3;
+        constexpr int AV_INDEX = 1;
+        constexpr int CODEC_NAME_INDEX = 2;
+        constexpr int CODEC_DESC = 3;
 
         ffmpeg_codec_info.clear();
         while (ffmpeg_process.canReadLine()) {
@@ -196,9 +196,9 @@ namespace inner {
         ffmpeg_format_info.clear();
 
         QRegExp pattern("^ ([ D])([ E]) ([^ ]+)\\s+(.*)$");
-        const int INDEX_DEMUX = 1;
-        const int INDEX_MUX = 2;
-        const int INDEX_NAME = 3;
+        constexpr int INDEX_DEMUX = 1;
+        constexpr int INDEX_MUX = 2;
+        constexpr int INDEX_NAME = 3;
         //const int INDEX_DETAIL = 4;
 
         while (ffmpeg_process.canReadLine()) {
@@ -346,7 +346,6 @@ QStringList FFmpegInterface::Private::getOptionList(const ConversionParameters &
                                                     , bool *success)
 {
     MediaProbe probe;
-    bool bNeedsAudioFilter;
 
     if (!probe.run(o.source, TIMEOUT)) {
         if (success)
@@ -354,7 +353,7 @@ QStringList FFmpegInterface::Private::getOptionList(const ConversionParameters &
         return QStringList();
     }
 
-    bNeedsAudioFilter = o.speed_scaling && !o.disable_audio && probe.hasAudio();
+    bool bNeedsAudioFilter = o.speed_scaling && !o.disable_audio && probe.hasAudio();
 
     QStringList list;
 

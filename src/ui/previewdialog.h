@@ -31,7 +31,7 @@ class PreviewDialog : public QDialog
     Q_OBJECT
     
 public:
-    explicit PreviewDialog(QWidget *parent = 0);
+    explicit PreviewDialog(QWidget *parent = nullptr);
     ~PreviewDialog();
 
     static bool available();
