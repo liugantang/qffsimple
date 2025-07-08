@@ -77,7 +77,7 @@ void NotificationService_NotifySend::send(QWidget */*parent*/, QString title, QS
 bool NotificationService_NotifySend::serviceAvailable() const
 {
     QProcess proc;
-    proc.start(NOTIFY_SEND_EXECUTABLE);
+    proc.start(NOTIFY_SEND_EXECUTABLE, QStringList());
     bool ret = proc.waitForStarted(1000);
     proc.kill();
     proc.waitForFinished(1000);
