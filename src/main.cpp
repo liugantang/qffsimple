@@ -144,6 +144,8 @@ static void register_external_tools()
 
 int main(int argc, char *argv[])
 {
+    QApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+    QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     // Create Application.
     QApplication app(argc, argv);
 
