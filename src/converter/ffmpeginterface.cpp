@@ -629,8 +629,7 @@ void FFmpegInterface::parseProcessOutput(const QString &data)
     QStringList::iterator it = lines.begin();
 
     // Parse from the end to find the latest progress information
-    for (auto it = lines.rbegin(); it != lines.rend(); ++it) {
-        const QString& line = *it;
+    for (const auto& line : lines) {
         if (line.isEmpty()) continue;
         
         // If progress information is found, process it immediately and return
