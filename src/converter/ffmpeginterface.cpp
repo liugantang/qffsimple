@@ -48,6 +48,23 @@ namespace patterns {
         PROG_2_SEC
     };
 
+    // Add new regular expression to handle full modern FFmpeg output
+    constexpr char progress3[]
+         = "frame=\\s*([0-9]+)\\s+fps=\\s*([0-9]+(?:\\.[0-9]+)?)\\s+q=\\s*([0-9]+(?:\\.[0-9]+)?)\\s+"
+           "size=\\s*([0-9]+)KiB\\s+time=\\s*([0-9][0-9]):([0-9][0-9]):([0-9][0-9](?:\\.[0-9][0-9]?)?)\\s+"
+           "bitrate=\\s*([0-9]+\\.[0-9]+)kbits/s";
+
+    enum Progress_3_Fields {
+        PROG_3_FRAME = 1,
+        PROG_3_FPS = 2,
+        PROG_3_Q = 3,
+        PROG_3_SIZE = 4,
+        PROG_3_HR = 5,
+        PROG_3_MIN = 6,
+        PROG_3_SEC = 7
+    };
+
+    
     constexpr char duration[]
         = "Duration:\\s+([0-9][0-9]):([0-9][0-9]):([0-9][0-9](\\.[0-9][0-9]?)?)";
 } // namespace patterns
@@ -283,6 +300,7 @@ struct FFmpegInterface::Private
     QString stringBuffer;
     QRegExp progress_pattern;
     QRegExp progress_pattern_2;
+    QRegExp progress_pattern_3;
     QRegExp duration_pattern;
 
     bool encoders_read;
@@ -295,6 +313,7 @@ struct FFmpegInterface::Private
     Private() : duration(0), progress(0)
       , progress_pattern(patterns::progress)
       , progress_pattern_2(patterns::progress2)
+      , progress_pattern_3(patterns::progress3)
       , duration_pattern(patterns::duration)
       , encoders_read(false) { }
 
@@ -308,30 +327,40 @@ struct FFmpegInterface::Private
 */
 bool FFmpegInterface::Private::check_progress(const QString& line)
 {
+    // try first pattern
     QRegExp& pattern = progress_pattern;
     int index = pattern.indexIn(line);
     if (index != -1) {
         const double t = pattern.cap(patterns::PROG_1_TIME).toDouble();
-
-        // calculate progress
         progress = (t / duration) * 100;
-
         return true;
-    } else { // try another pattern
-        QRegExp& alternate_pattern = progress_pattern_2;
-        if (alternate_pattern.indexIn(line) != -1) {
-            const int hour = alternate_pattern.cap(patterns::PROG_2_HR).toInt();
-            const int min = alternate_pattern.cap(patterns::PROG_2_MIN).toInt();
-            const double sec = alternate_pattern.cap(patterns::PROG_2_SEC).toDouble();
-            const double t = hour*3600 + min*60 + sec;
-
-            progress = (t / duration) * 100;
-
-            return true;
-        }
     }
-    errmsg = line; // save the last output line
+
+    // try second pattern
+    QRegExp& alternate_pattern = progress_pattern_2;
+    if (alternate_pattern.indexIn(line) != -1) {
+        const int hour = alternate_pattern.cap(patterns::PROG_2_HR).toInt();
+        const int min = alternate_pattern.cap(patterns::PROG_2_MIN).toInt();
+        const double sec = alternate_pattern.cap(patterns::PROG_2_SEC).toDouble();
+        const double t = hour*3600 + min*60 + sec;
+        progress = (t / duration) * 100;
+        return true;
+    }
+
+    // try third pattern
+    QRegExp& modern_pattern = progress_pattern_3;
+    if (modern_pattern.indexIn(line) != -1) {
+        const int hour = modern_pattern.cap(patterns::PROG_3_HR).toInt();
+        const int min = modern_pattern.cap(patterns::PROG_3_MIN).toInt();
+        const double sec = modern_pattern.cap(patterns::PROG_3_SEC).toDouble();
+        const double t = hour*3600 + min*60 + sec;
+        progress = (t / duration) * 100;
+        return true;
+    }
+
+    errmsg = line; // 保存最后的输出行
     return false;
+
 }
 
 /**
