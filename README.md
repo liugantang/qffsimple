@@ -1,3 +1,5 @@
+Notice: The original project at https://github.com/qwinff/qwinff appears to be unmaintained. This is an active fork aimed at fixing issues and continuing development.
+
 QWinFF, FFmpeg GUI front-end based on Qt4
 =========================================
 
