@@ -628,14 +628,19 @@ void FFmpegInterface::parseProcessOutput(const QString &data)
 
     QStringList::iterator it = lines.begin();
 
-    for (; it!=lines.end(); ++it) { // parse lines
-        QString& line = *it;
+    // Parse from the end to find the latest progress information
+    for (auto it = lines.rbegin(); it != lines.rend(); ++it) {
+        const QString& line = *it;
         if (line.isEmpty()) continue;
-        if (p->check_progress(line)) {
+        
+        // If progress information is found, process it immediately and return
+        if (p->check_progress(line))
+        {
             emit progressRefreshed(p->progress);
-            continue;
+            return; // Return immediately after finding progress, no need to process other rows
         }
     }
+
 }
 
 double FFmpegInterface::progress() const
