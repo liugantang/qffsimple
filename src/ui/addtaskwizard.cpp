@@ -30,6 +30,7 @@
 #include <QSettings>
 #include <QProgressDialog>
 #include <cassert>
+#include <QTimer>
 
 #define DEFAULT_OUTPUT_TO_SOURCE_DIR Constants::getBool("OutputToSourceFolder")
 
@@ -162,6 +163,13 @@ bool AddTaskWizard::validateCurrentPage()
         break;
     }
     return true;
+}
+
+void AddTaskWizard::showEvent(QShowEvent *event)
+{
+    QWizard::showEvent(event);
+    updateGeometry();
+    adjustSize();
 }
 
 void AddTaskWizard::slotAddFilesToList()

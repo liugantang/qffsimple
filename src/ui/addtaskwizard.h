@@ -61,6 +61,7 @@ public:
 protected:
     bool validateCurrentPage();
 
+    void showEvent(QShowEvent *event) override;
 private slots:
     void slotAddFilesToList();
     void slotRemoveFilesFromList();
