@@ -20,6 +20,7 @@
 #include <QLocale>
 #include <QTranslator>
 #include <QDir>
+#include <QFontDatabase>
 #include <QSettings>
 #include <QMessageBox>
 #include "ui/mainwindow.h"
@@ -141,6 +142,12 @@ static void register_external_tools()
     register_tool("sox");
     register_tool("mplayer");
 }
+static void InitFont()
+{
+    QFont fontGeneral = QFontDatabase::systemFont(QFontDatabase::GeneralFont);
+    fontGeneral.setPointSize(12);
+    QApplication::setFont(fontGeneral);
+}
 
 int main(int argc, char *argv[])
 {
@@ -148,6 +155,9 @@ int main(int argc, char *argv[])
     QApplication::setAttribute(Qt::AA_UseHighDpiPixmaps);
     // Create Application.
     QApplication app(argc, argv);
+
+    //init font
+    InitFont();
 
     if (!load_constants(app)) {
         app.exec();
