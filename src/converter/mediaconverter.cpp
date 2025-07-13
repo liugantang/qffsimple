@@ -135,7 +135,7 @@ QString MediaConverter::errorMessage() const
 
 void MediaConverter::readProcessOutput()
 {
-       m_pConv->parseProcessOutput(QString(m_proc.readAll()));
+    m_pConv->parseProcessOutput(QString(m_proc.readAll()));
 }
 
 void MediaConverter::convertProgressFinished(int exitcode, QProcess::ExitStatus)

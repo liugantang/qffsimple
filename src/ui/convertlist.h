@@ -96,6 +96,11 @@ public slots:
      */
     void start();
 
+    /**
+     *@brief Stop the conversion progress, and no longer run next task
+     */
+    void terminate();
+
     /*! Stop the conversion progress
      */
     void stop();
@@ -148,8 +153,8 @@ public slots:
     void clear();
 
 private slots:
-    void task_finished_slot(int);
-    void progress_refreshed(int);
+    void task_finished_slot(Task* pTask, int);
+    void progress_refreshed(Task* pTask, int);
     void show_background_image();
     void hide_background_image();
     void slotHeaderContextMenu(QPoint);
@@ -176,12 +181,12 @@ private:
     QTreeWidget *m_list;
     ListEventFilter *m_listEventFilter;
     int prev_index;
-    MediaConverter *m_converter;
     MediaProbe *m_probe;
-    Task *m_current_task;
     bool is_busy;
     bool run_next; ///< run next task regardless of the value of is_busy
+    bool bTerminate;
     Presets *m_presets;
+    QHash<Task*, MediaConverter*> m_mapRunningTasks;
 
     /** this variable should only be accessed by the output_filename_set* functions */
     QHash<QString, int> m_outputFileNames;

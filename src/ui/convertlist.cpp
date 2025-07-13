@@ -42,6 +42,7 @@
 #include "ui/conversionparameterdialog.h"
 #include "ui/interactivecuttingdialog.h"
 #include "addtaskwizard.h"
+#include "converter/util.h"
 #include "services/extensions.h"
 
 #define TIMEOUT 3000
@@ -152,11 +153,10 @@ ConvertList::ConvertList(Presets *presets, QWidget *parent) :
     m_list(new QTreeWidget(this)),
     m_listEventFilter(new ListEventFilter(this)),
     prev_index(0),
-    m_converter(new MediaConverter(this)),
     m_probe(new MediaProbe(this)),
-    m_current_task(nullptr),
     is_busy(false),
     run_next(false),
+    bTerminate(false),
     m_presets(presets)
 {
     QLayout *layout = new QHBoxLayout(this);
@@ -165,10 +165,6 @@ ConvertList::ConvertList(Presets *presets, QWidget *parent) :
     init_treewidget(m_list);
     layout->addWidget(m_list);
 
-    connect(m_converter, SIGNAL(finished(int))
-            , this, SLOT(task_finished_slot(int)));
-    connect(m_converter, SIGNAL(progressRefreshed(int)),
-            this, SLOT(progress_refreshed(int)));
     connect(m_list, SIGNAL(itemSelectionChanged()),
             this, SIGNAL(itemSelectionChanged()));
     connect(m_list, SIGNAL(doubleClicked(QModelIndex)),
@@ -392,6 +388,11 @@ bool ConvertList::selectedTaskFailed() const
 
 void ConvertList::start()
 {
+    if (bTerminate)
+    {
+        return;
+    }
+
     if (is_busy && !run_next)
         return;
 
@@ -403,7 +404,8 @@ void ConvertList::start()
         emit started();
     }
 
-    if (!run_first_queued_task()) {
+    run_first_queued_task();
+    if (m_mapRunningTasks.isEmpty()) {
         // no task is executed
         this->stop();
         emit all_tasks_finished();
@@ -411,17 +413,28 @@ void ConvertList::start()
     }
 }
 
+void ConvertList::terminate()
+{
+    bTerminate = true;
+    this->stop();
+}
+
 void ConvertList::stop()
 {
     is_busy = false;
-    if (m_current_task) {
-        progress_refreshed(0);
-        m_current_task->status = Task::QUEUED;
-        progressBar(m_current_task)->setActive(false);
-        m_current_task = nullptr;
-        emit stopped();
+    auto listTasks = m_mapRunningTasks.keys();
+
+    for (auto & pTask : listTasks)
+    {
+        if (pTask) {
+            progress_refreshed(pTask,0);
+            pTask->status = Task::QUEUED;
+            progressBar(pTask)->setActive(false);
+            m_mapRunningTasks[pTask]->stop();
+            emit stopped();
+        }
     }
-    m_converter->stop();
+    m_mapRunningTasks.clear();
 }
 
 void ConvertList::removeSelectedItems()
@@ -573,22 +586,23 @@ void ConvertList::clear()
 }
 
 // Private Slots
-void ConvertList::task_finished_slot(int exitcode)
+void ConvertList::task_finished_slot(Task* pTask, int exitcode)
 {
-    if (m_current_task) {
+    MediaConverter* pConverter = qobject_cast<MediaConverter*>(sender());
 
-        m_current_task->status = (exitcode == 0)
+    if (pTask) {
+
+        pTask->status = (exitcode == 0)
                 ? Task::FINISHED
                 : Task::FAILED;
 
         if (exitcode != 0)
-            m_current_task->errmsg = m_converter->errorMessage();
+            pTask->errmsg = pConverter->errorMessage();
         else
-            m_current_task->errmsg = "";
+            pTask->errmsg = "";
 
-        refresh_progressbar(m_current_task);
-
-        m_current_task = nullptr;
+        refresh_progressbar(pTask);
+        m_mapRunningTasks.remove(pTask);
         emit task_finished(exitcode);
 
         run_next = true;
@@ -596,11 +610,11 @@ void ConvertList::task_finished_slot(int exitcode)
     }
 }
 
-void ConvertList::progress_refreshed(int percentage)
+void ConvertList::progress_refreshed(Task* pTask, int percentage)
 {
-    if (m_current_task) {
+    if (pTask) {
         qDebug() << "Progress Refreshed: " << percentage << "%";
-        progressBar(m_current_task)->setValue(percentage);
+        progressBar(pTask)->setValue(percentage);
     }
 }
 
@@ -913,30 +927,41 @@ bool ConvertList::run_first_queued_task()
 {
     // execute the first queued task in the list and return
     // returns true if a task is run, false if none
+    QSettings settings;
+    auto nMaxTasks = settings.value("options/tasks", util::getDefaultTaskCount()).toInt();
+    bool bRet = false;
     const int task_count = count();
     for (int i=0; i<task_count; i++) {
         QTreeWidgetItem *item = m_list->topLevelItem(i);
         Task *task = get_task(item);
-        if (task->status == Task::QUEUED) {
-            QSettings settings;
-
+        if (task->status == Task::QUEUED && m_mapRunningTasks.size() < nMaxTasks) {
             // start the task
             is_busy = true;
             task->status = Task::RUNNING;
-            m_current_task = task;
+            auto * converter = new MediaConverter(this);
+            connect(converter, &MediaConverter::finished, this, [this, task](int nExitCode)
+            {
+                task_finished_slot(task, nExitCode);
+            });
+
+            connect(converter, &MediaConverter::progressRefreshed, this, [this, task](int percentage)
+            {
+                progress_refreshed(task, percentage);
+            });
+            m_mapRunningTasks[task] = converter;
 
             progressBar(task)->setActive(true);
 
             task->param.threads = settings.value("options/threads", DEFAULT_THREAD_COUNT).toInt();
             qDebug() << "Threads: " + QString::number(task->param.threads);
 
-            m_converter->start(task->param);
+            converter->start(task->param);
             emit start_conversion(i, task->param);
 
-            return true;
+            bRet = true;
         }
     }
-    return false;
+    return bRet;
 }
 
 /* Fill in the columns of the list according to the conversion parameter
@@ -1157,7 +1182,7 @@ void ConvertList::refresh_progressbar(Task *task)
         prog->setActive(false);
         break;
     case Task::RUNNING:
-        prog->setValue(m_converter->progress());
+        prog->setValue(m_mapRunningTasks[task]->progress());
         prog->setToolTip("");
         prog->setStatusTip("");
         prog->setActive(true);

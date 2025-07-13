@@ -17,12 +17,14 @@
 
 #include "optionsdialog.h"
 #include "ui_optionsdialog.h"
+#include "converter/util.h"
 #include "converter/exepath.h"
 #include "converter/mediaconverter.h"
 #include "services/constants.h"
 #include <QMessageBox>
 #include <QSettings>
 #include <QHeaderView>
+
 
 OptionsDialog::OptionsDialog(QWidget *parent) :
     QDialog(parent),
@@ -73,7 +75,10 @@ int OptionsDialog::exec_tools()
 void OptionsDialog::read_fields()
 {
     QSettings settings;
+
+
     ui->spinThreads->setValue(settings.value("options/threads", DEFAULT_THREAD_COUNT).toInt());
+    ui->spinTasks->setValue(settings.value("options/tasks", util::getDefaultTaskCount()).toInt());
     ui->chkHideFormats->setChecked(settings.value("options/hideformats", true).toBool());
     ui->chkCheckUpdates->setChecked(settings.value("options/check_update_on_startup",
                               Constants::getBool("CheckUpdateOnStartup")).toBool());
@@ -94,10 +99,10 @@ void OptionsDialog::write_fields()
 {
     QSettings settings;
     settings.setValue("options/threads", ui->spinThreads->value());
+    settings.setValue("options/tasks", ui->spinTasks->value());
     settings.setValue("options/hideformats", ui->chkHideFormats->isChecked());
     settings.setValue("options/check_update_on_startup", ui->chkCheckUpdates->isChecked());
     settings.setValue("options/auto_start_conversion", ui->chkAutoStartConversion->isChecked());
-
 #ifndef TOOLS_IN_DATA_PATH
     // table to ExePath
     const int count = ui->toolTable->rowCount();

@@ -269,7 +269,7 @@ void MainWindow::closeEvent(QCloseEvent *event)
         }
     }
 
-    m_list->stop();
+    m_list->terminate();
 
     save_settings();
 }

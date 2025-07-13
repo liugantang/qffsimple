@@ -12,6 +12,7 @@ set(qwinff_source_files
   converter/mediaconverter.cpp
   converter/mediaprobe.cpp
   converter/presets.cpp
+  converter/util.cpp
 
   services/abstractpreviewer.cpp
   services/constants.cpp
