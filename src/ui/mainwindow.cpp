@@ -155,6 +155,17 @@ void MainWindow::slotAddFiles()
     add_files();
 }
 
+void MainWindow::slotAddDirectory()
+{
+    AddTaskWizard wizard(m_presets, this);
+
+    if (wizard.ExecOpenDir() == QDialog::Accepted) {
+        // Add all input files to the list.
+        const QList<ConversionParameters> &paramList = wizard.getConversionParameters();
+        m_list->addTasks(paramList);
+    }
+}
+
 void MainWindow::slotOptions()
 {
     OptionsDialog dialog(this);
@@ -448,6 +459,7 @@ void MainWindow::setup_menus()
     // File
     connect(ui->actionAddFiles, SIGNAL(triggered()),
             this, SLOT(slotAddFiles()));
+    connect(ui->actionAddDirectory, &QAction::triggered, this, &MainWindow::slotAddDirectory);
     connect(ui->actionOptions, SIGNAL(triggered()),
             this, SLOT(slotOptions()));
     connect(ui->actionExit, SIGNAL(triggered()),

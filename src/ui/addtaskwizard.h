@@ -52,6 +52,8 @@ public:
      */
     int exec_openfile();
 
+    int ExecOpenDir();
+
     /*! Fill in the files and execute the wizard.
      *  The wizard will skip the file-selecting page.
      *  @param files files to convert
@@ -63,6 +65,7 @@ protected:
 
     void showEvent(QShowEvent *event) override;
 private slots:
+    void slotAddDirToList();
     void slotAddFilesToList();
     void slotRemoveFilesFromList();
     void slotEditPresetButton();

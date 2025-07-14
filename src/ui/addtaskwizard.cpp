@@ -125,6 +125,17 @@ int AddTaskWizard::exec_openfile()
     return QWizard::exec();
 }
 
+int AddTaskWizard::ExecOpenDir()
+{
+    ui->lstFiles->clear();
+    if (startId() == PAGEID_SELECTFILES) { // popup select file dialog
+        slotAddDirToList();
+        if (ui->lstFiles->count() == 0)
+            return QWizard::Rejected;
+    }
+    return QWizard::exec();
+}
+
 int AddTaskWizard::exec(const QStringList &files)
 {
     ui->lstFiles->clear();
@@ -170,6 +181,42 @@ void AddTaskWizard::showEvent(QShowEvent *event)
     QWizard::showEvent(event);
     updateGeometry();
     adjustSize();
+}
+
+void AddTaskWizard::slotAddDirToList()
+{
+    QString strDir = QFileDialog::getExistingDirectory(this, tr("Select Directory"), m_prev_path);
+    if (strDir.isEmpty())
+    {
+        return;
+    }
+
+    QSettings settings;
+    settings.setValue("addtaskwizard/openfilepath", m_prev_path);
+
+    QDir dir(strDir);
+    auto fileInfoList = dir.entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
+    QStringList strListvideo;
+    auto extListVideo = m_exts->video();
+    for (int i=0; i<fileInfoList.size(); i++)
+    {
+        auto info = fileInfoList[i];
+        if (info.isDir())
+        {
+            auto fileInfoListOfChildDir = QDir(info.absoluteFilePath()).entryInfoList(QDir::AllEntries | QDir::NoDotAndDotDot);
+            fileInfoList.append(fileInfoListOfChildDir);
+        }
+        else
+        {
+            QString strSuffix = info.suffix().toLower();
+            if (extListVideo.contains(strSuffix))
+            {
+                strListvideo.append(info.absoluteFilePath());
+            }
+        }
+    }
+
+    addFiles(strListvideo);
 }
 
 void AddTaskWizard::slotAddFilesToList()
