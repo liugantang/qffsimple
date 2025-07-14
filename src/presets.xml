@@ -178,74 +178,74 @@
 
   <MKVx264HQ>
     <label>MKV x264 (High Quality)</label>
-    <params>-map 0 -c:v libx264 -crf 23 -preset medium -c:a aac -b:a 160k -c:s copy</params>
+    <params>-map 0 -c:v libx264 -crf 23 -preset veryslow -c:a aac -b:a 160k -c:s copy</params>
     <extension>mkv</extension>
     <category>Matroska (MKV)</category>
   </MKVx264HQ>
   <MKVx264VHQ>
     <label>MKV x264 (Very High Quality)</label>
-    <params>-map 0 -c:v libx264 -crf 20 -preset slow -c:a aac -b:a 192k -c:s copy</params>
+    <params>-map 0 -c:v libx264 -crf 20 -preset veryslow -c:a aac -b:a 192k -c:s copy</params>
     <extension>mkv</extension>
     <category>Matroska (MKV)</category>
   </MKVx264VHQ>
   <MKVx264SHQ>
     <label>MKV x264 (Super High Quality)</label>
-    <params>-map 0 -c:v libx264 -crf 18 -preset slower -c:a aac -b:a 256k -c:s copy</params>
+    <params>-map 0 -c:v libx264 -crf 18 -preset veryslow -c:a aac -b:a 256k -c:s copy</params>
     <extension>mkv</extension>
     <category>Matroska (MKV)</category>
   </MKVx264SHQ>
   <MKVx265HQ>
     <label>MKV x265 (High Quality)</label>
-    <params>-map 0 -c:v libx265 -crf 28 -preset medium -tag:v hvc1 -c:a aac -b:a 160k -c:s copy</params>
+    <params>-map 0 -c:v libx265 -crf 28 -preset veryslow -tag:v hvc1 -c:a aac -b:a 160k -c:s copy</params>
     <extension>mkv</extension>
     <category>Matroska (MKV)</category>
   </MKVx265HQ>
   <MKVx265VHQ>
     <label>MKV x265 (Very High Quality)</label>
-    <params>-map 0 -c:v libx265 -crf 24 -preset slow -tag:v hvc1 -c:a aac -b:a 192k -c:s copy</params>
+    <params>-map 0 -c:v libx265 -crf 24 -preset veryslow -tag:v hvc1 -c:a aac -b:a 192k -c:s copy</params>
     <extension>mkv</extension>
     <category>Matroska (MKV)</category>
   </MKVx265VHQ>
   <MKVx265SHQ>
     <label>MKV x265 (Super High Quality)</label>
-    <params>-map 0 -c:v libx265 -crf 20 -preset slower -tag:v hvc1 -c:a aac -b:a 256k -c:s copy</params>
+    <params>-map 0 -c:v libx265 -crf 20 -preset veryslow -tag:v hvc1 -c:a aac -b:a 256k -c:s copy</params>
     <extension>mkv</extension>
     <category>Matroska (MKV)</category>
   </MKVx265SHQ>
 
   <MKVx264HQLosslessAudio>
     <label>MKV x264 (HQ) + Lossless Audio</label>
-    <params>-map 0 -c:v libx264 -crf 23 -preset medium -c:a copy -c:s copy</params>
+    <params>-map 0 -c:v libx264 -crf 23 -preset veryslow -c:a copy -c:s copy</params>
     <extension>mkv</extension>
     <category>Matroska (MKV) - Lossless Audio</category>
   </MKVx264HQLosslessAudio>
   <MKVx264VHQLosslessAudio>
     <label>MKV x264 (VHQ) + Lossless Audio</label>
-    <params>-map 0 -c:v libx264 -crf 20 -preset slow -c:a copy -c:s copy</params>
+    <params>-map 0 -c:v libx264 -crf 20 -preset veryslow -c:a copy -c:s copy</params>
     <extension>mkv</extension>
     <category>Matroska (MKV) - Lossless Audio</category>
   </MKVx264VHQLosslessAudio>
   <MKVx264SHQLosslessAudio>
     <label>MKV x264 (SHQ) + Lossless Audio</label>
-    <params>-map 0 -c:v libx264 -crf 18 -preset slower -c:a copy -c:s copy</params>
+    <params>-map 0 -c:v libx264 -crf 18 -preset veryslow -c:a copy -c:s copy</params>
     <extension>mkv</extension>
     <category>Matroska (MKV) - Lossless Audio</category>
   </MKVx264SHQLosslessAudio>
   <MKVx265HQLosslessAudio>
     <label>MKV x265 (HQ) + Lossless Audio</label>
-    <params>-map 0 -c:v libx265 -crf 28 -preset medium -tag:v hvc1 -c:a copy -c:s copy</params>
+    <params>-map 0 -c:v libx265 -crf 28 -preset veryslow -tag:v hvc1 -c:a copy -c:s copy</params>
     <extension>mkv</extension>
     <category>Matroska (MKV) - Lossless Audio</category>
   </MKVx265HQLosslessAudio>
   <MKVx265VHQLosslessAudio>
     <label>MKV x265 (VHQ) + Lossless Audio</label>
-    <params>-map 0 -c:v libx265 -crf 24 -preset slow -tag:v hvc1 -c:a copy -c:s copy</params>
+    <params>-map 0 -c:v libx265 -crf 24 -preset veryslow -tag:v hvc1 -c:a copy -c:s copy</params>
     <extension>mkv</extension>
     <category>Matroska (MKV) - Lossless Audio</category>
   </MKVx265VHQLosslessAudio>
   <MKVx265SHQLosslessAudio>
     <label>MKV x265 (SHQ) + Lossless Audio</label>
-    <params>-map 0 -c:v libx265 -crf 20 -preset slower -tag:v hvc1 -c:a copy -c:s copy</params>
+    <params>-map 0 -c:v libx265 -crf 20 -preset veryslow -tag:v hvc1 -c:a copy -c:s copy</params>
     <extension>mkv</extension>
     <category>Matroska (MKV) - Lossless Audio</category>
   </MKVx265SHQLosslessAudio>
